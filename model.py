@@ -4,11 +4,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 # Load pre-trained model and tokenizer
 class Bert(nn.Module):
-    def __init__(self, model_path):
+    def __init__(self, model_path, num_labels= 5):
         super(Bert, self).__init__()
         self.tokenizer = BertTokenizer.from_pretrained(model_path)
         self.model = BertModel.from_pretrained(model_path, output_attentions=True)
-        self.classfier = nn.Linear(768, 5)
+        self.classifier = nn.Linear(self.model.config.hidden_size, num_labels)
         
 
     def get_model(self):
@@ -19,7 +19,10 @@ class Bert(nn.Module):
     
     def forward(self, input_ids, attention_mask=None, token_type_ids=None):
         output = self.model(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids, output_attentions=True, output_hidden_states=True)
-        logits = self.classfier(output.pooler_output)     
+        #logits = self.classfier(output.pooler_output)     
+        # 直接使用 [CLS] 的隐藏状态进行分类,不使用pooler_output
+        logits = self.classifier(output.last_hidden_state[:,0,:])    
+        
         return output, logits
     
     # def f(self, input_ids, attention_mask, token_type_ids):

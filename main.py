@@ -2,7 +2,7 @@
 from transformers import BertTokenizer, BertModel
 from train import train
 from data_process import AmazonReviewsDatasetSplit
-from utils import clean_text, norm_analysis_v1, weighted_analysis, norm_analysis_v2
+# from utils import clean_text, norm_analysis_v1, weighted_analysis, norm_analysis_v2
 from model import Bert
 import torch
 import matplotlib.pyplot as plt
@@ -14,12 +14,35 @@ import sys
 import string
 import re
 import textwrap
+import kagglehub
+
+# # Download latest version
+# path = kagglehub.dataset_download(".\\data","snap/amazon-fine-food-reviews")
+
+# print("Path to dataset files:", path)
+
+# # download model
+# from transformers import BertModel, BertTokenizer
+# import os
+
+# save_directory = "./model_hub/bert-base"
+
+# os.makedirs(save_directory, exist_ok=True)
+
+# model = BertModel.from_pretrained("bert-base-uncased",use_safetensors=False)
+# tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+# model.save_pretrained(save_directory)
+# tokenizer.save_pretrained(save_directory)
+
+# print(f"BERT base model and tokenizer saved to {save_directory}")
+
 
 # train model
-model_path = ".\\model_hub\\bert-base"
-csv_file = ".\\data\\Reviews.csv"
+model_path = "model_hub/bert-base"
+csv_file = "data/Reviews.csv"
 max_len = 512
-batch_size = 16
+batch_size = 48
 learning_rate = 2e-5
 num_epochs = 2
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
