@@ -1,4 +1,6 @@
-/data/
+/data/database.sqlite
+/data/hashes.txt
+/data/Reviews.csv
 /model_hub/bert-base/
-/trained_model/
+/trained_model/model_step_43000.pth
 /FeatureCP
